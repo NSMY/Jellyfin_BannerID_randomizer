@@ -1,4 +1,5 @@
 # A random ID script for [Jellyfin-Featured Banner](https://github.com/BobHasNoSoul/jellyfin-featured/) From [BobHasNoSoul](https://github.com/BobHasNoSoul) ![Screenshot 2023-11-11 090503](https://github.com/BobHasNoSoul/jellyfin-featured/assets/23018412/be19e601-da6f-4428-ba66-0c8179b2dd55) 
+## Windows Or Linux Compatable
 it gets all movies and shows.series ID (Images; MetadataPath ID) from your [Jellyfin DB](https://jellyfin.org/) (not seasons/episodes) selects 5 random and the LastSavedMedia of the db of either Movies/Series, and makes a list of them
 to be the banners list.txt to make a Random Featured list, NewestItemSaved in the db will be 0 on the list.
 
