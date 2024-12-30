@@ -4,13 +4,16 @@ to be the banners list.txt to make a Random Featured list, NewestItemSaved in th
 
 jellyfin-featured was found From the list of Jellyfin addons/plugins/mods & utils found HERE: https://github.com/awesome-jellyfin/awesome-jellyfin
 
-all you need is the [get_rand_jellyfin_ids.py](https://github.com/NSMY/Jellyfin_BannerID_randomizer/blob/main/get_rand_jellyfin_ids.py) open with a text editor and edit your Paths inot the file then Run via the command prompt
+all you need is the [get_rand_jellyfin_ids.py](https://github.com/NSMY/Jellyfin_BannerID_randomizer/blob/main/get_rand_jellyfin_ids.py) open with a text editor and edit <ins>**YOUR**</ins> Paths in to the file then Run via the command prompt
 
 # Prerequisite [Python Installed](https://www.python.org/downloads/)
 
 ## Download the Script
 
-You can directly download the `get_rand_jellyfin_ids.py` script by clicking the button below:
+You can directly download the `get_rand_jellyfin_ids.py` script:
 
-[![Download get_rand_jellyfin_ids.py](https://img.shields.io/badge/Download-get__rand__jellyfin__ids.py-blue?style=for-the-badge&logo=download&logoColor=white)]([https://raw.githubusercontent.com/<username>/<repo>/main/get_rand_jellyfin_ids.py](https://raw.githubusercontent.com/NSMY/Jellyfin_BannerID_randomizer/refs/heads/main/get_rand_jellyfin_ids.py))
+**Right-click the link and select "Save Link As..." to download the file.**
+
+[![Download get_rand_jellyfin_ids.py](https://img.shields.io/badge/Download-get__rand__jellyfin__ids.py-blue?style=for-the-badge&logo=download&logoColor=white)](https://raw.githubusercontent.com/NSMY/Jellyfin_BannerID_randomizer/refs/heads/main/get_rand_jellyfin_ids.py)
+
 
