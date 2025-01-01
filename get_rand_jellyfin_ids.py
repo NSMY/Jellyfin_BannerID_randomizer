@@ -1,5 +1,5 @@
 # A script for Jellyfin-Featured Banner (https://github.com/BobHasNoSoul/jellyfin-featured/).
-# it gets all movies and shows.series ID (not seasons/episodes) selects 5 (line 73) random
+# it gets all movies and shows.series ID (not seasons/episodes) selects 5 (line 82) random
 # and the LastSavedMedia of the db of either Movies/Series, and makes a list of them
 # to be the banners list.txt, NewestItemSaved in the db will be 0 on the list.
 
@@ -55,17 +55,23 @@ with sqlite3.connect(db_path) as conn:
     cursor.execute(query)
     results = cursor.fetchall()
 
-parsed_image_ids = []
-
-for row in results:
-    ParsedImageID = parse_images(row[2])
-    if ParsedImageID:
-        parsed_image_ids.append({
-            'ParsedImageID': ParsedImageID,
-            'DateCreated': row[3],
-            'DateLastMediaAdded': row[4] if row[4] is not None else row[3]
-        })
-        # print(f"TypedBaseItem: {row[0]}, PresentationUniqueKey: {row[1]}, ParsedImageID: {ParsedImageID}, DateCreated: {row[3]}, DateLastMediaAdded: {row[4]}")
+while True:
+    parsed_image_ids = []
+    try:
+        for ind, row in enumerate(results):
+            ParsedImageID = parse_images(row[2])
+            if ParsedImageID:
+                parsed_image_ids.append({
+                    'ParsedImageID': ParsedImageID,
+                    'DateCreated': row[3],
+                    'DateLastMediaAdded': row[4] if row[4] is not None else row[3]
+                })
+                # print(f"TypedBaseItem: {row[0]}, PresentationUniqueKey: {row[1]}, ParsedImageID: {ParsedImageID}, DateCreated: {row[3]}, DateLastMediaAdded: {row[4]}")
+        break
+    except AttributeError as e:
+        print(e, f"\nItem {row} in db has No Image data yet (likely Jellyfin un-scanned): Skipping X item ")
+        results.pop(ind)
+        parsed_image_ids.clear()
 
 # Select the newest item based on DateCreated and DateLastMediaAdded
 newest_item = max(parsed_image_ids, key=lambda x: x['DateLastMediaAdded']) if parsed_image_ids else None
