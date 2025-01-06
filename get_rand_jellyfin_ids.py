@@ -1,12 +1,15 @@
 # A script for Jellyfin-Featured Banner (https://github.com/BobHasNoSoul/jellyfin-featured/).
-# it gets all movies and shows.series ID (not seasons/episodes) selects 5 (line 82) random
-# and the LastSavedMedia of the db of either Movies/Series, and makes a list of them
-# to be the banners list.txt, NewestItemSaved in the db will be 0 on the list.
+# it gets all movies and shows.series ID (not seasons/episodes) selects user specified amount or Rand ids
+# and y (num_newest_items) LastSavedMedia of the db of both Movies.Movie & Tv.Series, and makes a list of them
+# to be the banners list.txt, num_newest_items in the db will be first on the list.
 
 import os
 import sqlite3
 import random
 import platform
+
+NUM_NEWEST_ITEMS = 2  # Number of newest items in list
+RANDOM_IDS = 4 # Num Rands in list
 
 
 # If linux cd to where this file is saved,
@@ -31,7 +34,6 @@ def parse_images(images_col):
     parts = images_col.split('/')
     return parts[3] if len(parts) > 3 else None
 
-
 with sqlite3.connect(db_path) as conn:
     cursor = conn.cursor()
 
@@ -42,7 +44,8 @@ with sqlite3.connect(db_path) as conn:
         PresentationUniqueKey,
         Images,
         DateCreated,
-        DateLastMediaAdded
+        DateLastMediaAdded,
+        CleanName
     FROM
         TypedBaseItems
     WHERE
@@ -73,21 +76,20 @@ while True:
         results.pop(ind)
         parsed_image_ids.clear()
 
-# Select the newest item based on DateCreated and DateLastMediaAdded
-newest_item = max(parsed_image_ids, key=lambda x: x['DateLastMediaAdded']) if parsed_image_ids else None
+# Select the newest items based on DateCreated and DateLastMediaAdded
+newest_items = sorted(parsed_image_ids, key=lambda x: x['DateLastMediaAdded'], reverse=True)[:NUM_NEWEST_ITEMS]
 
-# Select 5 random ParsedImageIDs
+remaining_items = [item for item in parsed_image_ids if item not in newest_items]
+
+# Select x random ParsedImageIDs
 # (ImageIds is the easiest way to get the ID as series hs a unique key and not one just for the parent Series)
 # good tool to access dbs (https://sqlitebrowser.org/)
-random_sample = random.sample(parsed_image_ids, 5) if len(parsed_image_ids) >= 5 else parsed_image_ids
+num_random_items = RANDOM_IDS
+random_sample = random.sample(remaining_items, num_random_items) if len(remaining_items) >= num_random_items else remaining_items
 
-if newest_item:
-    all_items = [newest_item] + [item for item in random_sample if item != newest_item]
-else:
-    all_items = random_sample
+all_items = newest_items + random_sample
 
 parsed_image_id_strings = [item['ParsedImageID'] for item in all_items]
-
 
 # # Uncomment the print block to test rather than saving a file every time
 # for item in all_items:
